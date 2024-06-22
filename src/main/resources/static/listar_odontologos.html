@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+  <title>Document</title>
+</head>
+<body>
+  <nav class="navbar  bg-dark navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="index.html">Clinica Odontologica</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Gestion Odontologos
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="agregar_odontologos.html">Agregar Odontologos</a></li>
+              <li><a class="dropdown-item" href="listar_odontologos.html">Listar Odontologos</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-xl">
+    <h1 class="mt-5">Odontologos</h1>
+    <table class="table table-striped-columns" id="odontologosTable">
+      <thead class="table-light">
+        <tr>
+          <th>Orden</th>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Matricula</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+
+  <div class="row">
+    <div class="col-sm-6" style="display: none;
+											background-color:#e6fffa; padding:10px; border-radius:3px"
+         id="div_odontologo_updating">
+      <form id="update_odontologo_form">
+        <div class="form-group">
+          <label >Id:</label>
+          <input type="text" class="form-control" id="odontologo_id" readonly>
+        </div>
+        <div class="form-group">
+          <label >Nombre:</label>
+          <input type="text" class="form-control" placeholder="Nombre" id="nombre">
+        </div>
+        <div class="form-group">
+          <label >Apellido:</label>
+          <input type="text" class="form-control" placeholder="Apellido" id="apellido">
+        </div>
+        <div class="form-group">
+          <label >Matricula:</label>
+          <input type="text" class="form-control" placeholder="Matricula" id="matricula">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Modificar</button>
+        <button type="button" class="btn btn-secondary" onclick="window.location.reload();">Cancelar</button>
+      </form>
+      <div id="response" style="display:none; margin:10px">
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para editar odontólogo -->
+  <div class="modal fade" id="editarOdontologoModal" tabindex="-1" aria-labelledby="editarOdontologoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editarOdontologoModalLabel">Editar Odontólogo</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editarFormulario">
+            <div class="mb-3">
+              <label for="editNombre" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="editNombre" name="editNombre">
+            </div>
+            <div class="mb-3">
+              <label for="editApellido" class="form-label">Apellido</label>
+              <input type="text" class="form-control" id="editApellido" name="editApellido">
+            </div>
+            <div class="mb-3">
+              <label for="editMatricula" class="form-label">Matrícula</label>
+              <input type="text" class="form-control" id="editMatricula" name="editMatricula">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" onclick="guardarCambios()">Guardar Cambios</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para confirmar eliminación -->
+  <div class="modal fade" id="eliminarOdontologoModal" tabindex="-1" aria-labelledby="eliminarOdontologoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="eliminarOdontologoModalLabel">Confirmar Eliminación</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ¿Está seguro de que desea eliminar al odontólogo seleccionado?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger" onclick="confirmarEliminarOdontologo()">Eliminar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JavaScript Bundle with Popper -->
+<!--  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>-->
+  <script src="js/listar_odontologos.js"></script>
+</body>
+</html>
